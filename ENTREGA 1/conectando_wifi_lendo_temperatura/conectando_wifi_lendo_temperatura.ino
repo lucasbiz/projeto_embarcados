@@ -40,6 +40,9 @@ void loop() {
 // Aguarda entre as leituras do sensor
   delay(3000); // Atraso de 3 segundos
 
+  Serial.print("Endereço IP: ");
+  Serial.println(WiFi.localIP());
+
   // Lê a umidade e a temperatura
   float humidity = dht.readHumidity();
   float temperature = dht.readTemperature();
