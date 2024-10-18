@@ -1,9 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const sqlite3 = require('sqlite3').verbose();
+const cors = require('cors');
 
 const app = express();
 const port = 3000;
+app.use(cors());
 
 // Configura o body-parser para lidar com requisições POST
 app.use(bodyParser.urlencoded({ extended: true }));
