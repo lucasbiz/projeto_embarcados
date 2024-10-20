@@ -4,7 +4,7 @@ const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
 
 const app = express();
-const port = 3000;
+const port = 3001;
 app.use(cors());
 
 // Configura o body-parser para lidar com requisições POST
@@ -39,11 +39,11 @@ app.post('/save_data', (req, res) => {
 
 // Rota para visualizar os dados armazenados (para o front-end)
 app.get('/data', (req, res) => {
-  db.all('SELECT * FROM sensor_data', (err, rows) => {
+  db.all('SELECT * FROM sensor_data ORDER BY id DESC LIMIT 1008', (err, rows) => {
     if (err) {
       return res.status(500).send('Erro ao buscar os dados');
     }
-    res.json(rows);  // Retorna os dados em formato JSON para o front-end
+    res.json(rows.reverse());  // Reverte a ordem para que os mais antigos venham primeiro
   });
 });
 

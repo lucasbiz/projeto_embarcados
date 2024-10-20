@@ -4,7 +4,7 @@ import FetchSensorData from './components/FetchSensorData';
 function App() {
   return (
     <div className="App">
-      <h1>Teste frontend</h1>
+      <h1>Dashboard - Sensor de temperatura e umidade</h1>
       <FetchSensorData></FetchSensorData>
     </div>
   );
