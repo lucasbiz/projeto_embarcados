@@ -38,7 +38,6 @@
     margin: 5px 0;
   }
   
-  /* Estilo do gráfico */
   .chart-container {
     background-color: #fff;
     padding: 20px;
@@ -46,7 +45,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 800px;
-    margin-bottom: 30px;
+    margin: 0 auto;
   }
   
   /* Tooltip para os gráficos */
