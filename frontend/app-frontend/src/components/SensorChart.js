@@ -1,39 +1,86 @@
 import React from 'react';
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { Line } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+
+// Registrando os componentes do Chart.js
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 function SensorChart({ data }) {
-  // Função para formatar o timestamp no eixo X
-  const formatXAxis = (tickItem) => {
-    const date = new Date(tickItem);
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    return `${day}/${month}\n${hours}:${minutes}`;
+  // Preparar os dados para o gráfico
+  const chartData = {
+    labels: data.map(item => {
+      const date = new Date(item.timestamp);
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const hours = date.getHours().toString().padStart(2, '0');
+      const minutes = date.getMinutes().toString().padStart(2, '0');
+      return `${day}/${month} ${hours}:${minutes}`; // Formato dd/mm hh:mm
+    }),
+    datasets: [
+      {
+        label: 'Temperatura (°C)',
+        data: data.map(item => item.temperature),
+        borderColor: 'rgba(255, 99, 132, 1)', // Cor da linha de temperatura
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        borderWidth: 2,
+        tension: 0.3, // Curvatura da linha
+      },
+      {
+        label: 'Umidade (%)',
+        data: data.map(item => item.humidity),
+        borderColor: 'rgba(54, 162, 235, 1)', // Cor da linha de umidade
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderWidth: 2,
+        tension: 0.3,
+      },
+    ],
+  };
+
+  // Configurações do gráfico
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            if (context.dataset.label === 'Temperatura (°C)') {
+              return `Temperatura: ${context.raw} °C`;
+            } else if (context.dataset.label === 'Umidade (%)') {
+              return `Umidade: ${context.raw} %`;
+            }
+          },
+        },
+      },
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Data e Hora',
+        },
+      },
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: 'Valor',
+        },
+      },
+    },
   };
 
   return (
     <div className="chart-container">
       <h2>Histórico de Dados</h2>
-      <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={data}>
-          <Line type="monotone" dataKey="temperature" stroke="#ff7300" />
-          <Line type="monotone" dataKey="humidity" stroke="#387908" />
-          <CartesianGrid stroke="#ccc" />
-          <XAxis
-            dataKey="timestamp"
-            tickFormatter={formatXAxis}
-            interval={7} // Mostra um rótulo a cada 10 pontos
-            />
-
-          <YAxis />
-          <Tooltip />
-        </LineChart>
-      </ResponsiveContainer>
+      <Line data={chartData} options={options} />
     </div>
   );
 }
 
 export default SensorChart;
+
 
 
