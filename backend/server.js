@@ -47,6 +47,26 @@ app.get('/data', (req, res) => {
   });
 });
 
+// Rota para calcular a média de temperatura e umidade dos últimos 7 dias
+app.get('/average_last_7_days', (req, res) => {
+  const query = `
+    SELECT AVG(temperature) AS avg_temperature, AVG(humidity) AS avg_humidity
+    FROM sensor_data
+    WHERE timestamp >= datetime('now', '-7 days')
+  `;
+
+  db.get(query, (err, row) => {
+    if (err) {
+      return res.status(500).send('Erro ao calcular a média');
+    }
+    res.json({
+      avg_temperature: row.avg_temperature,
+      avg_humidity: row.avg_humidity,
+    });
+  });
+});
+
+
 // Inicia o servidor no localhost
 app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`);
