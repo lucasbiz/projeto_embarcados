@@ -40,20 +40,14 @@ function FetchSensorData() {
             {sensorData ? (
                 <div>
                     <div className="data-container">
-                        <div className="current-sensor-data">
                             <CurrentSensorData 
                                 temperature={sensorData[sensorData.length - 1].temperature} 
                                 humidity={sensorData[sensorData.length - 1].humidity} 
                                 timestamp={sensorData[sensorData.length - 1].timestamp}
                             />
-                        </div>
-                        <div className="average-sensor-data">
                             <AverageSensorData />
-                        </div>
                     </div>
-                    <div className="chart-container">
                         <SensorChart data={sensorData} />
-                    </div>
                 </div>
             ) : (
                 <p>Carregando...</p>

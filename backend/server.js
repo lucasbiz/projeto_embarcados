@@ -52,7 +52,7 @@ app.get('/average_last_7_days', (req, res) => {
   const query = `
     SELECT AVG(temperature) AS avg_temperature, AVG(humidity) AS avg_humidity
     FROM sensor_data
-    WHERE timestamp >= datetime('now', '-7 days')
+    WHERE timestamp >= datetime('now', '-30 days')
   `;
 
   db.get(query, (err, row) => {
